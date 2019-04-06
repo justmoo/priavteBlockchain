@@ -47,7 +47,7 @@ class Blockchain {
                 newBlock.height= await self.getBlockHeight();
                 if(await self.getBlockHeight() > 0){
                         let previousBlock = await self.getBlock(await self.getBlockHeight() - 1 ); // my bad i forgot about it 
-                        newBlock.previousBlockHash =await previousBlock.hash;
+                        newBlock.previousBlockHash = previousBlock.hash;
                 }
             newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
             self.bd.addLevelDBData( await newBlock.height, await JSON.stringify(newBlock).toString());
