@@ -101,18 +101,18 @@ let myBlockChain = new BlockChain.Blockchain();
  ***********************************************/
 
 
-// Be careful this only will work if `validateChain` method in Blockchain.js file return a Promise
-// myBlockChain.validateChain().then((errorLog) => {
-// 	if(errorLog.length > 0){
-// 		console.log("The chain is not valid:");
-// 		errorLog.forEach(error => {
-// 			console.log(error);
-// 		});
-// 	} else {
-// 		console.log("No errors found, The chain is Valid!");
-// 	}
-// })
-// .catch((error) => {
-// 	console.log(error);
-// })
+//Be careful this only will work if `validateChain` method in Blockchain.js file return a Promise
+myBlockChain.validateChain().then((errorLog) => {
+	if(errorLog.length > 0){
+		console.log("The chain is not valid:");
+		errorLog.forEach(error => {
+			console.log(error);
+		});
+	} else {
+		console.log("No errors found, The chain is Valid!");
+	}
+})
+.catch((error) => {
+	console.log(error);
+})
 

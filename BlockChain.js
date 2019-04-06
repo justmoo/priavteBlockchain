@@ -32,7 +32,7 @@ class Blockchain {
    async getBlockHeight() {
         let self =this;
         let height = await self.bd.getBlocksCount();
-        let length = await height.length ; // The method is working correctly and returns the height of the blockchain
+        let length = await height.length -1 ; // now it shows the right number 
         
         return length;
        
@@ -44,9 +44,9 @@ class Blockchain {
        
         try{
                 newBlock.time = new Date().getTime().toString().slice(0,-3);
-                newBlock.height= await self.getBlockHeight();
+                newBlock.height= await self.getBlockHeight() + 1; // done
                 if(await self.getBlockHeight() > 0){
-                        let previousBlock = await self.getBlock(await self.getBlockHeight() - 1 ); // Fixed some Json.parse
+                        let previousBlock = await self.getBlock(await self.getBlockHeight() - 1 ); // Fixed some Json.parse done
                         newBlock.previousBlockHash = previousBlock.hash; //fixed await
                 }
             newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
@@ -87,7 +87,7 @@ class Blockchain {
           return true;
         } else {
           console.log('Block #'+ height +' invalid hash:\n'+blockHash+'<>'+validBlockHash);
-          return false;
+          return false; 
         }
     }
 
@@ -95,22 +95,27 @@ class Blockchain {
      async validateChain() {
          let self= this;
          let errorLog = [];
-        for (var i = 0; i < await self.getBlockHeight() -1; i++) {
+         
+        for (var i = 0; i < await self.getBlockHeight(); i++) {
         // validate block
-        if (await !self.validateBlock(i))errorLog.push(i);
+         let checkTheBlock = await !(self.validateBlock(i)); // check this function 
+         console.log(checkTheBlock);
+        if (checkTheBlock)errorLog.push(await self.getBlock(i));
         // compare blocks hash link
-        let blockHash = JSON.parse(await self.getBlock(i)).hash;
-        let previousHash =JSON.parse( await self.getBlock(i+1)).previousBlockHash; 
+        let blockHash = await self.getBlock(i).hash;
+        let previousHash = await self.getBlock(i+1).previousBlockHash; 
         if (blockHash!==previousHash) {
-          errorLog.push(i);
+          errorLog.push(await self.getBlock(i));
         }
       }
-      if (errorLog.length>0) {
+
+      if ( errorLog.length > 0) {
         console.log('Block errors = ' + errorLog.length);
         console.log('Blocks: '+errorLog);
       } else {
         console.log('No errors detected');
       }
+      console.log(errorLog);
       return errorLog;
     }
 
