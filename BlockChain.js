@@ -98,9 +98,9 @@ class Blockchain {
          
         for (var i = 0; i < await self.getBlockHeight(); i++) {
         // validate block
-         let checkTheBlock = await !(self.validateBlock(i)); // check this function 
-         console.log(checkTheBlock);
-        if (checkTheBlock)errorLog.push(await self.getBlock(i));
+         let checkTheBlock = await self.validateBlock(i); // fixed error here , it was giving me always false 
+         
+        if (!checkTheBlock)errorLog.push(await self.getBlock(i)); // fixed it 
         // compare blocks hash link
         let blockHash = await self.getBlock(i).hash;
         let previousHash = await self.getBlock(i+1).previousBlockHash; 
@@ -115,7 +115,7 @@ class Blockchain {
       } else {
         console.log('No errors detected');
       }
-      console.log(errorLog);
+      
       return errorLog;
     }
 
