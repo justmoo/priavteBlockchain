@@ -20,7 +20,7 @@ class Blockchain {
    async generateGenesisBlock(){
        let self= this;
        try{
-        if(await self.getBlockHeight() <= 0 ){ // making it better , i tried -1 wasn't working correctly  
+        if(await self.getBlockHeight() <= 0 ){ // Changed it to <= instead of == 
             await self.addBlock( new Block.Block("First block in the chain - Genesis block"));
         }
             }catch(err) {
@@ -32,7 +32,7 @@ class Blockchain {
    async getBlockHeight() {
         let self =this;
         let height = await self.bd.getBlocksCount();
-        let length = await height.length ; // the method is working fine , and it returns 11 ! which is in the correct amount of blocks
+        let length = await height.length ; // The method is working correctly and returns the height of the blockchain
         
         return length;
        
@@ -46,8 +46,8 @@ class Blockchain {
                 newBlock.time = new Date().getTime().toString().slice(0,-3);
                 newBlock.height= await self.getBlockHeight();
                 if(await self.getBlockHeight() > 0){
-                        let previousBlock = await self.getBlock(await self.getBlockHeight() - 1 ); // my bad i forgot about it 
-                        newBlock.previousBlockHash = previousBlock.hash;
+                        let previousBlock = await self.getBlock(await self.getBlockHeight() - 1 ); // Fixed some Json.parse
+                        newBlock.previousBlockHash = previousBlock.hash; //fixed await
                 }
             newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
             self.bd.addLevelDBData( await newBlock.height, await JSON.stringify(newBlock).toString());
