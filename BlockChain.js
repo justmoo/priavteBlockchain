@@ -96,7 +96,7 @@ class Blockchain {
          let self= this;
          let errorLog = [];
          let BlockHeight = await self.getBlockHeight();
-        for (var i = 1; i <= BlockHeight; i++) {
+        for (var i = 1; i <= BlockHeight; i++) { // from one because gensis block doesn't have previous block
         // validate block
          let checkTheBlock = await self.validateBlock(i); // fixed error here , it was giving me always false 
          
