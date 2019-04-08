@@ -95,15 +95,15 @@ class Blockchain {
      async validateChain() {
          let self= this;
          let errorLog = [];
-         
-        for (var i = 0; i < await self.getBlockHeight(); i++) {
+         let BlockHeight = await self.getBlockHeight();
+        for (var i = 0; i <= BlockHeight; i++) {
         // validate block
          let checkTheBlock = await self.validateBlock(i); // fixed error here , it was giving me always false 
          
         if (!checkTheBlock)errorLog.push(await self.getBlock(i)); // fixed it 
         // compare blocks hash link
-        let blockHash = await self.getBlock(i).hash;
-        let previousHash = await self.getBlock(i+1).previousBlockHash; 
+        let blockHash = await self.getBlock(i-1).hash;
+        let previousHash = await self.getBlock(i).previousBlockHash; 
         if (blockHash!==previousHash) {
           errorLog.push(await self.getBlock(i));
         }
